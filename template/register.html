@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<form method="POST" action="Login">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" name="Create User">
+</form>
+{% endblock body %}
+
