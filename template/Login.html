@@ -6,25 +6,17 @@
 
 {% block body %}
 <div class="container">
-<form method="POST" action="home">
+<form method="post" action="loginuser">
 {% csrf_token %}
-<div class="row g-3 align-items-center" class="first">
-  <div class="col-auto">
-    <input type="text" name="user" class="form-control" placeholder="user id">
-  </div> 
-</div>
-<div class="row g-3 align-items-center" style="margin-top:12px;">
-  <div class="col-auto">
- <div class="form-group">
-      <input type="password" class="form-control" name="password" id="password" placeholder="credential" >
-    </div>
-  </div>
-</div>
-<div class="row g-3 align-items-center" class="first">
-<div class="col-auto" >
-  <button type="submit" class="btn btn-primary mb-3" style="margin-top:12px;">Login</button>
-</div>
-</div>
+    <input type="text" name="username" placeholder="user"><br>
+    <input type="password" name="password" placeholder="user"><br>
+    <input type="submit">
 </form>
 </div>
+<div>
+{% for message in messages %}
+    <h2>{{message}}</h2>
+{% endfor%}
+</div>
+
 {% endblock body %}

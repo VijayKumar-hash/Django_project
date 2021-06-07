@@ -1,10 +1,22 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<form method="POST" action="Login">
+<form method="post" action="register">
 {% csrf_token %}
-{{form.as_p}}
-<input type="submit" name="Create User">
+<input type="text" name="first_name" placeholder="first_name"><br>
+<input type="text" name="last_name" placeholder="last_name"><br>
+<input type="text" name="username" placeholder="username"><br>
+<input type="email" name="email" placeholder="email"><br>
+<input type="password" name="password1" placeholder="password"><br>
+<input type="password" name="password2" placeholder="confirm"><br>
+<input type="submit"> 
 </form>
+
+<div>
+{% for message in messages %}
+    <h2>{{message}}</h2>
+{% endfor%}
+</div>
+
 {% endblock body %}
 

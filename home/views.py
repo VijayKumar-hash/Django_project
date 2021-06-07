@@ -1,9 +1,9 @@
-from django.contrib import auth
 from django.http import HttpResponse
+from django.contrib import messages
+from django.contrib import auth
+from django.contrib.auth.models import User,auth
+from django.contrib.auth import authenticate,login,logout
 from django.shortcuts import render,redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import logout, login,authenticate
-from django.contrib.auth.forms import UserCreationForm
 
 
 # Create your views here.
@@ -11,32 +11,54 @@ def index(request):
     return render (request,'index.html')
 
 def register(request):
-    form = UserCreationForm()
-    
     if request.method=='POST':
-        form = UserCreationForm(request.POST)
-        
-        if form.is_valid():
-            form.save()
-            return redirect('Login')
+        first_name=request.POST['first_name']
+        last_name=request.POST['last_name']
+        email=request.POST['email']
+        password1=request.POST['password1']
+        password2=request.POST['password2']
+        username=request.POST['username']
 
-    context = {'form':form}
-    return render(request,'register.html',context)
+        if password1==password2:
+            if User.objects.filter(username=username).exists():
+                messages.info(request,'user already exists!!')
+                return redirect('/register')
 
+            elif User.objects.filter(email=email).exists():
+                messages.info(request,'email already exists')
+                return redirect('/register')
+ 
+            else:
+                user = User.objects.create_user(first_name=first_name,last_name=last_name,password=password2,email=email,username=username)
+                user.save()
+                return redirect('/loginuser')
 
-def Loginuser(request):
-    if request.method=='POST':
-        user = request.POST.get('user')
-        pwd = request.POST.get('password')
-        user = authenticate(user=user,password=pwd)
-
-        if user is None:
-            login(request,user)
         else:
-            pass
+            messages.error(request,'password not matching')
+            return redirect('register')
 
-    return render(request,'Login.html')
 
-def Logoutuser(request):
-    logout(request)
-    return redirect("/Login.html")
+    else:
+        return render(request,'register.html')
+
+def loginuser(request):
+    if request.method=='POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        
+        user = auth.authenticate(username=username,password=password)
+
+        if user is not None:
+            auth.login(request,user)
+            return redirect('/')
+        
+        else:
+            messages.info(request,'Invalid credentials!!!!')
+            return redirect('/loginuser')
+
+    else:
+        return render(request,'login.html')
+
+def logoutuser(request):
+    auth.logout(request)
+    return redirect('/')

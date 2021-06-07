@@ -52,18 +52,27 @@
      </ul> 
     </div>
     <div class="container-navbar">
-    <ul>
-      <a class="nav-link" href="Login">Login</a>
-    </ul>
+    {% if user.is_authenticated %}
+      <ul>
+        Hello {{request.user}}
+      </ul>
+      <ul>
+        <a class="nav-link" href="logoutuser">Logout</a>
+      </ul>
+      {% else %}
+        <ul>
+          <a class="nav-link" href="loginuser">Login</a>
+        </ul>
+        </div>
+        <div>
+        <ul>
+          <a class="nav-link" href="register">Register</a>
+        </ul>
+        {% endif %}
     </div>
     <div>
     <ul>
-      <a class="nav-link" href="register">Register</a>
-    </ul>
-    </div>
-    <div>
-    <ul>
-      <a class="nav-item">Hi  {{request.user}}!</a>
+      <a class="nav-item"></a>
     </ul>
     </div>
   </div>
